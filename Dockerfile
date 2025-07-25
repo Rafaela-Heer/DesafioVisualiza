@@ -1,0 +1,33 @@
+FROM python:3.12-slim-bullseye AS builder
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=100
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install --user -r requirements.txt
+
+
+FROM python:3.12-slim-bullseye
+
+RUN useradd --create-home appuser
+
+WORKDIR /app
+
+COPY --chown=appuser:appuser . .
+
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+EXPOSE 8000
+
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
