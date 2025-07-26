@@ -3,7 +3,7 @@ name: Build e Deploy da Visualiza API
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build-and-push:
