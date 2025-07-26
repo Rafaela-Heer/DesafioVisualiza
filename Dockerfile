@@ -13,16 +13,18 @@ COPY requirements.txt .
 RUN pip install --user -r requirements.txt
 
 
+
 FROM python:3.12-slim-bullseye
 
 RUN useradd --create-home appuser
 
 WORKDIR /app
 
-COPY --chown=appuser:appuser . .
+COPY requirements.txt .
 
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY --chown=appuser:appuser . .
 
 RUN chown -R appuser:appuser /app
 

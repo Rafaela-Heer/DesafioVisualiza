@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import httpx
 from dotenv import load_dotenv
 import os
+from fastapi.responses import HTMLResponse
 
 app = FastAPI()
 load_dotenv()
@@ -15,7 +16,6 @@ def root():
 def health():
     return {"status": "ok"}
 
-from fastapi.responses import HTMLResponse
 
 @app.get("/apod")
 async def get_apod():
@@ -27,7 +27,6 @@ async def get_apod():
             return response.json()
     except httpx.HTTPError as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 
 @app.get("/apod-web", response_class=HTMLResponse)
