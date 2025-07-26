@@ -66,7 +66,4 @@ A aplicação estará disponível em:
 └── requirements.txt
 ```
 
-##  Exemplo de imagem 
-Acesse: http://localhost:8000/apod-web
-
 ![Build Status](https://github.com/Rafaela-Heer/DesafioVisualiza/actions/workflows/main.yml/badge.svg)
